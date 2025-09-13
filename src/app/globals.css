@@ -1,14 +1,19 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+:root {
+  --background: #008080;
+  --foreground: #ffffff;
+}
+
+body {
+  font-family: 'MS Sans Serif', 'Chicago', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow: hidden;
+  background: var(--background);
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 20 24"><path fill="white" stroke="black" d="M4,0 L4,16 L8,12 L11,19 L13,18 L10,11 L14,11 Z"/></svg>'), auto;
   --font-mono: var(--font-geist-mono);
 }
 
