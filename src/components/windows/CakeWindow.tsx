@@ -2,14 +2,16 @@
 
 import { useState } from 'react';
 import styles from './Windows.module.css';
+import logger from '@/utils/logger';
 
 const CakeWindow = () => {
   const [wish, setWish] = useState('');
 
   const handleWishSubmit = () => {
     if (wish.trim()) {
-      console.log('Birthday Wish:', wish);
+      logger.wishEntered(wish);
       setWish('');
+      logger.wishCleared();
       alert('Your wish has been recorded! 🎂✨');
     }
   };

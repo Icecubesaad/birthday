@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import styles from './Windows.module.css';
+import logger from '@/utils/logger';
 
 interface Song {
   name: string;
@@ -135,29 +136,39 @@ const SpotifyWindow = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        logger.musicPaused(currentSong.name);
       } else {
         audioRef.current.play();
+        logger.musicPlayed(currentSong.name, currentSong.description, currentSong.image);
       }
       setIsPlaying(!isPlaying);
     }
   };
 
   const nextSong = () => {
-    setCurrentSongIndex((prev) => (prev + 1) % songs.length);
+    const nextIndex = (currentSongIndex + 1) % songs.length;
+    const nextSong = songs[nextIndex];
+    setCurrentSongIndex(nextIndex);
     setIsPlaying(false);
+    logger.musicPlayed(nextSong.name, nextSong.description, nextSong.image);
   };
 
   const prevSong = () => {
-    setCurrentSongIndex((prev) => (prev - 1 + songs.length) % songs.length);
+    const prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+    const prevSong = songs[prevIndex];
+    setCurrentSongIndex(prevIndex);
     setIsPlaying(false);
+    logger.musicPlayed(prevSong.name, prevSong.description, prevSong.image);
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
     if (audio) {
       const newTime = (parseFloat(e.target.value) / 100) * duration;
+      const oldTime = currentTime;
       audio.currentTime = newTime;
       setCurrentTime(newTime);
+      logger.musicSeeked(currentSong.name, oldTime, newTime);
     }
   };
 

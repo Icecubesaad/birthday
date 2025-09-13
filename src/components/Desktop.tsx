@@ -12,6 +12,7 @@ import SpotifyWindow from './windows/SpotifyWindow';
 import GiftWindow from './windows/GiftWindow';
 import ShoppingWindow from './windows/ShoppingWindow';
 import FutureDatesWindow from './windows/FutureDatesWindow';
+import logger from '@/utils/logger';
 
 interface WindowState {
   id: string;
@@ -31,49 +32,58 @@ const Desktop = () => {
     futureDates: { id: 'futureDates', isOpen: false, position: { x: 450, y: 180 }, zIndex: 100 },
   });
   
-  const [highestZIndex, setHighestZIndex] = useState(100);
-
   const openWindow = useCallback((windowId: string) => {
-    setWindows(prev => ({
-      ...prev,
-      [windowId]: {
-        ...prev[windowId],
+    setWindows(prev => {
+      const newWindows = { ...prev };
+      newWindows[windowId] = {
+        ...newWindows[windowId],
         isOpen: true,
-        zIndex: highestZIndex + 1
-      }
-    }));
-    setHighestZIndex(prev => prev + 1);
-  }, [highestZIndex]);
+        zIndex: Math.max(...Object.values(newWindows).map(w => w.zIndex)) + 1
+      };
+
+      logger.windowOpened(windowId, newWindows[windowId].position);
+      return newWindows;
+    });
+  }, []);
 
   const closeWindow = useCallback((windowId: string) => {
-    setWindows(prev => ({
-      ...prev,
-      [windowId]: {
-        ...prev[windowId],
+    setWindows(prev => {
+      const newWindows = { ...prev };
+      newWindows[windowId] = {
+        ...newWindows[windowId],
         isOpen: false
-      }
-    }));
+      };
+
+      logger.windowClosed(windowId);
+      return newWindows;
+    });
   }, []);
 
   const bringToFront = useCallback((windowId: string) => {
-    setWindows(prev => ({
-      ...prev,
-      [windowId]: {
-        ...prev[windowId],
-        zIndex: highestZIndex + 1
-      }
-    }));
-    setHighestZIndex(prev => prev + 1);
-  }, [highestZIndex]);
+    setWindows(prev => {
+      const newWindows = { ...prev };
+      const maxZIndex = Math.max(...Object.values(newWindows).map(w => w.zIndex));
+      newWindows[windowId] = {
+        ...newWindows[windowId],
+        zIndex: maxZIndex + 1
+      };
+
+      logger.windowFocused(windowId, newWindows[windowId].zIndex);
+      return newWindows;
+    });
+  }, []);
 
   const updatePosition = useCallback((windowId: string, position: { x: number; y: number }) => {
-    setWindows(prev => ({
-      ...prev,
-      [windowId]: {
-        ...prev[windowId],
+    setWindows(prev => {
+      const newWindows = { ...prev };
+      newWindows[windowId] = {
+        ...newWindows[windowId],
         position
-      }
-    }));
+      };
+
+      logger.windowMoved(windowId, position);
+      return newWindows;
+    });
   }, []);
 
   return (
@@ -84,7 +94,10 @@ const Desktop = () => {
         iconImage="/assets/icons/september-14.png"
         label="september 14.txt"
         position={{ x: 50, y: 120 }}
-        onDoubleClick={() => openWindow('letter')}
+        onDoubleClick={() => {
+          logger.iconClicked('september 14.txt', { x: 50, y: 120 });
+          openWindow('letter');
+        }}
       />
       <DesktopIcon
         icon="📁"
@@ -96,26 +109,38 @@ const Desktop = () => {
         iconImage="/assets/icons/make-a-wish.png"
         label="makeawish.txt"
         position={{ x: 310, y: 120 }}
-        onDoubleClick={() => openWindow('cake')}
+        onDoubleClick={() => {
+          logger.iconClicked('makeawish.txt', { x: 310, y: 120 });
+          openWindow('cake');
+        }}
       />
       <DesktopIcon
         iconImage="/assets/icons/music.png"
         label="music"
         position={{ x: 50, y: 340 }}
-        onDoubleClick={() => openWindow('spotify')}
+        onDoubleClick={() => {
+          logger.iconClicked('music', { x: 50, y: 340 });
+          openWindow('spotify');
+        }}
         hasWhiteBackground={true}
       />
       <DesktopIcon
         iconImage="/assets/icons/shopping.png"
         label="shopping.txt"
         position={{ x: 180, y: 360 }}
-        onDoubleClick={() => openWindow('shopping')}
+        onDoubleClick={() => {
+          logger.iconClicked('shopping.txt', { x: 180, y: 360 });
+          openWindow('shopping');
+        }}
       />
       <DesktopIcon
         iconImage="/assets/icons/dates.png"
         label="future dates.txt"
         position={{ x: 310, y: 360 }}
-        onDoubleClick={() => openWindow('futureDates')}
+        onDoubleClick={() => {
+          logger.iconClicked('future dates.txt', { x: 310, y: 360 });
+          openWindow('futureDates');
+        }}
       />
 
 

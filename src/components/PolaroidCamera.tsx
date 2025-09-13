@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './PolaroidCamera.module.css';
+import logger from '@/utils/logger';
 
 const PolaroidCamera = () => {
   const [photos, setPhotos] = useState<{id: number, imageIndex: number}[]>([]);
@@ -37,6 +38,9 @@ const PolaroidCamera = () => {
         const newPhoto = { id: Date.now(), imageIndex: randomImageIndex };
         setPhotos([...photos, newPhoto]);
         setUsedImages(new Set([randomImageIndex]));
+
+        logger.cameraReset();
+        logger.cameraClicked(photos.length + 1, randomImageIndex, albumImages[randomImageIndex]);
       } else {
         // Pick a random image from available ones
         const randomIndex = Math.floor(Math.random() * availableImages.length);
@@ -45,6 +49,8 @@ const PolaroidCamera = () => {
         
         setPhotos([...photos, newPhoto]);
         setUsedImages(prev => new Set([...prev, selectedImageIndex]));
+
+        logger.cameraClicked(photos.length + 1, selectedImageIndex, albumImages[selectedImageIndex]);
       }
       
       // Flash effect
