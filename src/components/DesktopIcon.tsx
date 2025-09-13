@@ -8,12 +8,13 @@ interface DesktopIconProps {
   label: string;
   position: { x: number; y: number };
   onDoubleClick: () => void;
+  hasWhiteBackground?: boolean;
 }
 
-const DesktopIcon: React.FC<DesktopIconProps> = ({ icon, iconImage, label, position, onDoubleClick }) => {
+const DesktopIcon: React.FC<DesktopIconProps> = ({ icon, iconImage, label, position, onDoubleClick, hasWhiteBackground = false }) => {
   return (
     <div
-      className={styles.desktopIcon}
+      className={`${styles.desktopIcon} ${hasWhiteBackground ? styles.whiteBackground : ''}`}
       style={{ left: position.x, top: position.y }}
       onDoubleClick={onDoubleClick}
     >

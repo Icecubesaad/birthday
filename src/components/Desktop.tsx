@@ -78,11 +78,6 @@ const Desktop = () => {
 
   return (
     <div className={styles.desktop}>
-      {/* Background Image */}
-      <div 
-        className={styles.backgroundImage}
-        style={{ backgroundImage: 'url(/assets/background.jpg)' }}
-      ></div>
 
       {/* Desktop Icons */}
       <DesktopIcon
@@ -106,8 +101,9 @@ const Desktop = () => {
       <DesktopIcon
         iconImage="/assets/icons/music.png"
         label="music"
-        position={{ x: 50, y: 240 }}
+        position={{ x: 50, y: 340 }}
         onDoubleClick={() => openWindow('spotify')}
+        hasWhiteBackground={true}
       />
       <DesktopIcon
         iconImage="/assets/icons/shopping.png"

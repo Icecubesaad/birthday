@@ -70,12 +70,12 @@ const PolaroidCamera = () => {
         }}
       />
       <div className={styles.polaroidPhotos}>
-        {photos.map((photo, index) => (
+        {photos.slice().reverse().map((photo, index) => (
           <div
             key={photo.id}
             className={styles.polaroidPhoto}
             style={{
-              zIndex: 100 - index,
+              zIndex: photos.length - index,
               animation: 'photoEject 0.5s ease-out',
               transform: `translate(${-100 - index * 20}px, ${50 + index * 10}px) rotate(${-15 + index * 5}deg)`,
             }}
