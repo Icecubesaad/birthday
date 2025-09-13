@@ -89,7 +89,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
         </form>
 
         <div className={styles.hint}>
-          Think of what i call you on sunday (Pride and Prejudice)
+          Think of what i call you on sunday 
         </div>
       </div>
     </div>
