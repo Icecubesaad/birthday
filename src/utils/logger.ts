@@ -3,7 +3,7 @@
 interface LogEntry {
   timestamp: string;
   event: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   category: 'icon' | 'window' | 'music' | 'wish' | 'camera' | 'system';
 }
 
@@ -24,7 +24,7 @@ class Logger {
     });
   }
 
-  private addLog(category: LogEntry['category'], event: string, details: Record<string, any> = {}): void {
+  private addLog(category: LogEntry['category'], event: string, details: Record<string, unknown> = {}): void {
     const logEntry: LogEntry = {
       timestamp: this.formatTimestamp(),
       event,
